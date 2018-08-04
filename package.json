@@ -4,6 +4,7 @@
   "description": "nysargic backend application",
   "main": "app.js",
   "dependencies": {
+    "@google-cloud/datastore": "^1.4.1",
     "express": "^4.16.3"
   },
   "devDependencies": {},
