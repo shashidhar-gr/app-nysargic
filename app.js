@@ -1,41 +1,35 @@
 const express = require('express')
 const app = express()
-const Datastore = require('@google-cloud/datastore');
-//app.get('/', (req, res) => res.send('Hello World Nysargic!'))
-app.get('/', function(req, res) {
 
-        // Your Google Cloud Platform project ID
-        const projectId = 'app-nysargic';
+/**
+ * Middlewares.
+ **/
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
-        // Creates a client
-        const datastore = new Datastore({
-        projectId: projectId,
-        });
+/**
+* Controllers, Routers and other Config files.  
+**/
+const db = require('./utils/dbConfig');
+const usersRouter = require('./controllers/usersRouter')
+const otherRouter = require('./controllers/otherRouter');
 
-        // The kind for the new entity
-        const kind = 'Task';
-        // The name/ID for the new entity
-        const name = 'sampletask1';
-        // The Cloud Datastore key for the new entity
-        const taskKey = datastore.key([kind, name]);
+/**
+ * Routing rules.
+**/
+app.use('/', otherRouter);
+app.use('/user', usersRouter);
 
-        // Prepares the new entity
-        const task = {
-        key: taskKey,
-        data: {
-            description: 'Buy milk',
-        },
-        };
-
-        // Saves the entity
-        datastore
-        .save(task)
-        .then(() => {
-            res.send(`Saved ${task.key.name}: ${task.data.description}`);
-        })
-        .catch(err => {
-            res.send('ERROR:', err);
-        });
+/**
+ * Database connectivity.
+**/
+var dataPromise = db.connect('mongodb+srv://growforus_dev_db:24XjILY2jAz4CgmW@cluster0-ebbj4.mongodb.net/growforus?retryWrites=true');
+dataPromise.then(function(data) {
+    app.listen(8080, () => console.log('Example app listening on port 8080!'))
+})
+.catch(function(err) {
+    console.log('Unable to connect to Mongo.')
+    process.exit(1)
 });
-app.listen(8080, () => console.log('Example app listening on port 8080!'))
+
 
