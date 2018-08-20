@@ -1,4 +1,3 @@
-var db = require('../utils/dbConfig');
 const Datastore = require('@google-cloud/datastore');
 var uniqid = require('uniqid');
 

@@ -13,12 +13,13 @@ app.use(express.urlencoded({ extended: false }));
 const db = require('./utils/newDbConfig');
 const usersRouter = require('./controllers/usersRouter')
 const otherRouter = require('./controllers/otherRouter');
-
+const testRouter = require('./controllers/testRouter');
 /**
  * Routing rules.
 **/
 app.use('/', otherRouter);
 app.use('/user', usersRouter);
+app.use('/test', testRouter);
 
 app.listen(8080, () => console.log('Example app listening on port 8080!'))
 
