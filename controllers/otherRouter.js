@@ -13,10 +13,10 @@ router.post('/registration', function (req, res, next) {
 
     Registration.register(req.body)
         .then(function (user) {
-            res.send(200, { "success": true, "message": user.message });
+            res.status(200).json({ "success": true, "message": user.message });
         })
         .catch(function (err) {
-            res.json(500, { "success": false, "message": err.message });
+            res.status(500).json({ "success": false, "message": err.message });
         });
 });
 

@@ -1,9 +1,6 @@
-var db = require('../utils/dbConfig');
 const Datastore = require('@google-cloud/datastore');
-var uniqid = require('uniqid');
 
-exports.register = function (userObj) {
-
+exports.login = function (userObj) {
     return new Promise(function (resolve, reject) {
         // Your Google Cloud Platform project ID
         const projectId = 'app-nysargic';
@@ -13,11 +10,6 @@ exports.register = function (userObj) {
             projectId: projectId,
         });
 
-        // The kind for the new entity
-        const kind = 'User';
-
-        // The Cloud Datastore key for the new entity
-        const taskKey = datastore.key([kind, userObj.mobile]);
         const query = datastore
             .createQuery('User')
             .filter('mobile', '=', userObj.mobile);
@@ -34,11 +26,9 @@ exports.register = function (userObj) {
                 }
                 else {
                     const user = {
-                        'memberid': uniqid(), 
                         'username': userObj.username,
                         'mobile': userObj.mobile,
-                        'email': userObj.email,
-                        'members': []
+                        'email': userObj.email
                     }
 
                     const entity = {

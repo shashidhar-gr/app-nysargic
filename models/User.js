@@ -1,24 +1,13 @@
 /**
  * User model.
  * **/
-exports.User = function User(emailid, phone, name) {
-    this.emailid = emailid;
-    this.phone = phone;
-    this.username = name;
+var mongoose = require('mongoose');
+var Schecma = mongoose.Schema;
 
-    this.add = function() {
+var userSchema = new Schema({
+    emailid: { type: String , required: true},
+    phone: { type: String , required: true},
+    username: { type: String , required: true}
+});
 
-    }
-
-    this.find = function() {
-
-    }
-
-    this.update = function() {
-
-    }
-
-    this.delete = function() {
-        
-    }
-}
+exports.userModel = mongoose.model('User', userSchema);
