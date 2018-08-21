@@ -1,6 +1,51 @@
 const Datastore = require('@google-cloud/datastore');
 var uniqid = require('uniqid');
 
+exports.get = function(reqParams) {
+    return new Promise(function (resolve, reject) {
+        // Your Google Cloud Platform project ID
+        const projectId = 'app-nysargic';
+
+        // Creates a client
+        const datastore = new Datastore({
+            projectId: projectId,
+        });
+
+        // The kind for the new entity
+        const kind = 'Test';
+
+        // The Cloud Datastore key for the new entity
+        const testKey = datastore.key([kind]);
+
+        const query = datastore
+            .createQuery('Test')
+            .filter('testId', '=', reqParams.testId);
+
+        datastore.runQuery(query)
+            .then(results => {
+                const test = results[0];
+
+                if (test.length > 0) {
+                    resolve({
+                        "message": test
+                    });
+                }
+                else {
+                    reject({
+                        "err": "",
+                        "message": "Couldn't found test."
+                    });
+                }
+            })
+            .catch(err => {
+                reject({
+                    "err": err,
+                    "message": "Internal server error"
+                });
+            });
+    });
+}
+
 exports.create = function(testObj) {
     return new Promise(function (resolve, reject) {
         // Your Google Cloud Platform project ID
